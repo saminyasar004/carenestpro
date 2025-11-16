@@ -1,50 +1,177 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <img src="./assets/images/favicon.png" alt="CareNestPro Logo" width="100"/>
+</div>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# CareNestPro
 
-## Get started
+CareNestPro is a mobile application built with [React Native](https://reactnative.dev/) using [Expo](https://expo.dev/), [Expo Router](https://expo.github.io/router/), and styled with [NativeWind](https://www.nativewind.dev/), a utility-first CSS framework for React Native. The app helps users explore and plan trips, discover local attractions, and manage travel itineraries.
 
-1. Install dependencies
+## Table of Contents
 
-   ```bash
-   npm install
-   ```
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the App](#running-the-app)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-2. Start the app
+## Features
 
-   ```bash
-   npx expo start
-   ```
+- Discover nearby attractions and destinations
+- Plan and manage trip itineraries
+- User-friendly interface with responsive design
+- Fast and performant UI powered by Expo and NativeWind
+- Seamless navigation with Expo Router
 
-In the output, you'll find options to open the app in a
+## Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Expo**: Streamlined development and deployment for React Native apps
+- **React Native**: Build native mobile apps using JavaScript and React
+- **Expo Router**: File-based routing for Expo apps
+- **NativeWind**: Tailwind CSS-inspired styling for React Native
+- **Node.js**: JavaScript runtime for development
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Prerequisites
 
-## Get a fresh project
+Before you begin, ensure you have the following installed:
 
-When you're ready, run:
+- [Node.js](https://nodejs.org/) (v16 or higher recommended)
+- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- [Android Studio](https://developer.android.com/studio) (for Android development)
+- [Xcode](https://developer.apple.com/xcode/) (for iOS development, macOS only)
+- A code editor like [VS Code](https://code.visualstudio.com/)
 
-```bash
-npm run reset-project
+## Installation
+
+1. **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/saminyasar004/carenestpro.git
+    cd carenestpro
+    ```
+
+2. **Install dependencies**:
+
+    Using npm:
+
+    ```bash
+    npm install
+    ```
+
+    Or using Yarn:
+
+    ```bash
+    yarn install
+    ```
+
+3. **Set up NativeWind**:
+
+    NativeWind is already included in the dependencies. Ensure your `babel.config.js` contains:
+
+    ```js
+    module.exports = {
+    	presets: ["babel-preset-expo"],
+    	plugins: ["nativewind/babel"],
+    };
+    ```
+
+    Also, ensure you have a `tailwind.config.js` in your project root:
+
+    ```js
+    /** @type {import('tailwindcss').Config} */
+    module.exports = {
+    	content: [
+    		"./app/**/*.{js,jsx,ts,tsx}",
+    		"./components/**/*.{js,jsx,ts,tsx}",
+    	],
+    	theme: {
+    		extend: {},
+    	},
+    	plugins: [],
+    };
+    ```
+
+4. **Set up environment**:
+    - For Android: Ensure you have an Android emulator or a physical device connected.
+    - For iOS: Ensure Xcode is set up with a simulator or a connected iOS device (macOS only).
+
+## Running the App
+
+1. **Start the Expo development server**:
+
+    ```bash
+    npm start
+    ```
+
+    Or, if using Yarn:
+
+    ```bash
+    yarn start
+    ```
+
+2. **Run on Android**:
+
+    ```bash
+    npm run android
+    ```
+
+    Or:
+
+    ```bash
+    yarn android
+    ```
+
+3. **Run on iOS** (macOS only):
+
+    ```bash
+    npm run ios
+    ```
+
+    Or:
+
+    ```bash
+    yarn ios
+    ```
+
+4. **Using Expo Go**:
+   After running `expo start`, scan the QR code with the Expo Go app on your mobile device.
+
+## Project Structure
+
+```plaintext
+carenestpro/
+├── app/                  # Expo Router app directory (screens, layouts, etc.)
+│   ├── _layout.tsx       # Root layout for navigation
+│   ├── index.tsx         # Main entry screen
+│   └── onboarding/       # Onboarding screens
+│       └── onboarding4.tsx
+├── assets/               # Images, SVGs, and other static assets
+│   ├── adaptive-icon.svg
+│   ├── onboarding-doodle-4.svg
+│   └── ...other assets
+├── global.css            # Global styles (if used)
+├── tailwind.config.js    # Tailwind CSS config for NativeWind
+├── babel.config.js       # Babel config (with NativeWind plugin)
+├── app.json              # Expo app configuration
+├── package.json          # Project dependencies and scripts
+└── README.md             # Project documentation
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Contributing
 
-## Learn more
+Contributions are welcome! To contribute:
 
-To learn more about developing your project with Expo, look at the following resources:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Make your changes and commit (`git commit -m 'Add your feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a Pull Request.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Please ensure your code follows the project's coding standards and includes appropriate tests.
 
-## Join the community
+## License
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
