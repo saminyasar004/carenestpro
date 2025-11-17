@@ -17,8 +17,7 @@ export default function Index() {
 		<SafeAreaView className="w-full h-full bg-white">
 			<Header
 				title="Welcome to CareNestPro"
-				subtitle="Where Families find trusted Care and professionals
-build Careers"
+				subtitle="Where Families find trusted Care and professionals build Careers"
 				showBackButton={false}
 			/>
 			<ScrollView
