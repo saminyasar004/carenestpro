@@ -47,7 +47,7 @@ export default function Page() {
 				Toast.success(
 					response?.data?.message || "Preview generated successfully"
 				);
-				router.push("/seeker/summary");
+				router.push("/seeker/near-care-providers");
 			}
 		} catch (err: any) {
 			console.log(err.message);
