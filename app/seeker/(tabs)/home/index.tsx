@@ -1,6 +1,7 @@
 import SubscribeModal from "@/components/common/subscribe-modal";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "expo-router";
 import { BadgeCheck, Bell, FolderOpen } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -14,6 +15,7 @@ import {
 } from "react-native";
 
 export default function HomePage() {
+	const router = useRouter();
 	const { user } = useAuthStore();
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [refreshing, setRefreshing] = useState(false);
@@ -132,7 +134,13 @@ export default function HomePage() {
 					</View>
 
 					<View className="flex items-end w-[40%]">
-						<Button title="Verify ID" className="py-2 w-min px-4" />
+						<Button
+							onPress={() =>
+								router.push("/seeker/settings/verify-identity")
+							}
+							title="Verify ID"
+							className="py-2 w-min px-4"
+						/>
 					</View>
 				</View>
 
