@@ -105,6 +105,7 @@ function CareProviderCard() {
 						<View className="flex flex-row gap-1 items-center">
 							{Array.from({ length: 5 }).map((_, i) => (
 								<Star
+									key={i}
 									size={10}
 									color="#CB9E49"
 									fill="#CB9E49"
