@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { Star } from "lucide-react-native";
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
+import {
+	Image,
+	Pressable,
+	SafeAreaView,
+	ScrollView,
+	Text,
+	View,
+} from "react-native";
 
 export default function NearCareProviders() {
 	const router = useRouter();
@@ -9,10 +16,18 @@ export default function NearCareProviders() {
 	return (
 		<SafeAreaView className="w-full h-full bg-white">
 			<View className="w-full h-24 pt-14 flex flex-col gap-3 px-5 items-center">
-				<View className="w-full flex flex-row items-center gap-3">
+				<View className="w-full flex flex-row items-center justify-between gap-3">
 					<Text className="text-[#515151] text-2xl font-medium">
 						Care Providers near you
 					</Text>
+					<Pressable
+						className="text-primary"
+						onPress={() => router.push("/seeker/summary")}
+					>
+						<Text className="text-primary text-base font-medium">
+							Continue
+						</Text>
+					</Pressable>
 				</View>
 			</View>
 			<ScrollView
