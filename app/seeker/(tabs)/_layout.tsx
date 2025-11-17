@@ -43,7 +43,7 @@ export default function TabsLayout() {
 					options={{
 						title: "Home",
 						href: {
-							pathname: "/provider/home",
+							pathname: "/seeker/home",
 							params: {},
 						},
 						tabBarIcon: ({ color, focused }) => (
