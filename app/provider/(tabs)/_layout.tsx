@@ -1,5 +1,6 @@
 import NoRippleTabButton from "@/components/ui/no-rippler-pressable";
-import { Tabs } from "expo-router";
+import { useAuthStore } from "@/store/authStore";
+import { Tabs, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import {
 	House,
@@ -8,11 +9,22 @@ import {
 	Settings,
 	Wallet,
 } from "lucide-react-native";
+import { useEffect } from "react";
 import { SafeAreaView, useColorScheme, View } from "react-native";
 
 export default function TabsLayout() {
+	const router = useRouter();
 	const colorScheme = useColorScheme();
 	const isDark = colorScheme === "dark";
+	const { user } = useAuthStore();
+
+	useEffect(() => {
+		if (user?.user_type === "seeker") {
+			router.push("/seeker/(tabs)/home");
+		} else {
+			router.push("/provider/(tabs)/home");
+		}
+	}, []);
 
 	return (
 		<SafeAreaView className="w-full h-full">
