@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
 	Image,
 	ImageBackground,
+	Pressable,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -149,7 +150,14 @@ export default function HomePage() {
 				</Text>
 
 				<View className="w-full flex flex-row gap-3">
-					<View className="w-[48%] bg-[#F3F9FC] border border-[#E6F2F9] rounded-lg flex flex-col gap-3 p-5">
+					<Pressable
+						onPress={() =>
+							router.push(
+								"/seeker/(tabs)/home/new-care-providers-request"
+							)
+						}
+						className="w-[48%] bg-[#F3F9FC] border border-[#E6F2F9] rounded-lg flex flex-col gap-3 p-5"
+					>
 						<View className="bg-[#E6F2F9] border border-[#EAF4FA] rounded-full w-[50px] h-[50px] p-1">
 							<Image
 								source={require("@/assets/images/calendar.png")}
@@ -164,7 +172,7 @@ export default function HomePage() {
 						<Text className="text-[#889FAD] text-base font-normal">
 							Find Your Perfect Care Provider
 						</Text>
-					</View>
+					</Pressable>
 
 					<View className="w-[48%] bg-[#F4FAF5] border border-[#EAF5EC] rounded-lg flex flex-col gap-3 p-5">
 						<View className="bg-[#EAF6EB] border border-[#EAF5EC] rounded-full w-[50px] h-[50px] p-1">
