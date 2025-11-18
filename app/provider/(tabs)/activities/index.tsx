@@ -1,6 +1,11 @@
 import { Tab, Tabs } from "@/components/ui/tabs";
 import { baseURL } from "@/config";
-import { useActivitiesStore } from "@/store/activitiesStore";
+import {
+	ActiveActivityProps,
+	ClosedActivityProps,
+	PendingActivityProps,
+	useActivitiesStore,
+} from "@/store/activitiesStore";
 import { format, parse } from "date-fns";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
@@ -144,7 +149,7 @@ export default function Activities() {
 	);
 }
 
-function ActiveTabItemCard({ item }: any) {
+function ActiveTabItemCard({ item }: { item: ActiveActivityProps }) {
 	const startTime = item.start_time
 		? format(parse(item.start_time, "HH:mm:ss", new Date()), "h:mm a")
 		: "";
@@ -155,12 +160,12 @@ function ActiveTabItemCard({ item }: any) {
 		<View className="w-full flex flex-row gap-4 items-center">
 			<View className="flex flex-col gap-1 items-center">
 				<Text className="text-[#B3B3B3] text-sm font-normal">
-					{new Date(item.date).toLocaleDateString("en-US", {
+					{new Date(item.date as any).toLocaleDateString("en-US", {
 						weekday: "short",
 					})}
 				</Text>
 				<Text className="text-[#666666] text-sm font-normal">
-					{new Date(item.date).getDate()}
+					{new Date(item.date as any).getDate()}
 				</Text>
 			</View>
 			<View className="border-l-4 border-[#0D99C9] rounded-lg p-4 bg-[#F5F5F5] flex flex-1 flex-row gap-4">
@@ -187,7 +192,7 @@ function ActiveTabItemCard({ item }: any) {
 	);
 }
 
-function ClosedTabItemCard({ item }: any) {
+function ClosedTabItemCard({ item }: { item: ClosedActivityProps }) {
 	const router = useRouter();
 	return (
 		<Pressable
@@ -205,7 +210,7 @@ function ClosedTabItemCard({ item }: any) {
 	);
 }
 
-function PendingTabItemCard({ item }: any) {
+function PendingTabItemCard({ item }: { item: PendingActivityProps }) {
 	return (
 		<Pressable className="w-full bg-white border border-[#E6E6E6] p-3 rounded-lg flex flex-col gap-2">
 			<Text className="text-[#808080] text-sm font-medium">
