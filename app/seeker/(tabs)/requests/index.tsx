@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { Tab, Tabs } from "@/components/ui/tabs";
 import { useRouter } from "expo-router";
-import { ArrowLeft, Info, Star } from "lucide-react-native";
-import { useEffect } from "react";
+import { ArrowLeft } from "lucide-react-native";
 import {
 	Image,
 	Pressable,
@@ -11,29 +10,8 @@ import {
 	View,
 } from "react-native";
 
-export default function Activities() {
+export default function Requests() {
 	const router = useRouter();
-	// const {
-	// 	getPendingActivities,
-	// 	getActiveActivities,
-	// 	getClosedActivities,
-	// 	pendingActivities,
-	// 	activeActivities,
-	// 	closedActivities,
-	// 	isLoading,
-	// 	error,
-	// } = useActivitiesStore();
-
-	useEffect(() => {
-		// const fetchData = async () => {
-		// 	await Promise.all([
-		// 		getActiveActivities(),
-		// 		getClosedActivities(),
-		// 		getPendingActivities(),
-		// 	]);
-		// };
-		// fetchData();
-	}, []);
 
 	return (
 		<SafeAreaView className="flex-1 bg-white">
@@ -44,130 +22,197 @@ export default function Activities() {
 						<ArrowLeft size={20} color="#636363" />
 					</Pressable>
 					<Text className="text-[#515151] text-2xl font-medium">
-						New care providers request
+						Requests
 					</Text>
 				</View>
 			</View>
+
+			{/* Loading Spinner */}
+			{/* {isLoading ? (
+				<View className="flex-1 items-center justify-center bg-white">
+					<ActivityIndicator size="large" color="#0D99C9" />
+					<Text className="mt-3 text-[#666] text-base">
+						Loading...
+					</Text>
+				</View>
+			) : error ? (
+				<View className="flex-1 items-center justify-center px-6">
+					<Text className="text-red-500 text-lg font-medium mb-2">
+						{error}
+					</Text>
+					<Pressable
+						onPress={() => {
+							getActiveActivities();
+							getClosedActivities();
+							getPendingActivities();
+						}}
+						className="bg-[#0D99C9] px-4 py-2 rounded-md mt-2"
+					>
+						<Text className="text-white font-medium">Retry</Text>
+					</Pressable>
+				</View>
+			) : ( */}
 			<ScrollView
 				className="p-5 bg-white"
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
 				contentContainerClassName="gap-6"
 			>
-				<View className="w-full flex flex-row items-center justify-between gap-5 bg-[#EDF7EE] border border-[#DFF1E1] rounded-lg p-2">
-					<View className="flex-1 flex-row items-center gap-3 pr-2">
-						<Info size={16} color="#435F46" />
-						<Text
-							className="text-base text-wrap font-normal text-[#435F46]"
-							// numberOfLines={1}
-							// ellipsizeMode="tail"
-						>
-							You can only message 1 care provider on free plan
-						</Text>
-					</View>
+				<Tabs>
+					{/* Active Tab */}
+					<Tab title={`Active (2)`}>
+						<View className="w-full flex py-5 flex-col gap-3">
+							{/* {activeActivities.length > 0 ? (
+								activeActivities.map((item) => (
+									<ActiveTabItemCard
+										key={item.id}
+										item={item}
+									/>
+								))
+							) : (
+								<Text className="text-center text-[#999]">
+									No active activities
+								</Text>
+							)} */}
+							<ActiveTabItemCard />
+						</View>
+					</Tab>
 
-					<Pressable>
-						<Text className="text-primary underline text-base font-medium">
-							Upgrade
-						</Text>
-					</Pressable>
-				</View>
+					{/* Closed Tab */}
+					<Tab title={`Closed (3)`}>
+						<View className="w-full flex py-5 flex-col gap-3">
+							{/* {closedActivities.length > 0 ? (
+								closedActivities.map((item) => (
+									<ClosedTabItemCard
+										key={item.id}
+										item={item}
+									/>
+								))
+							) : (
+								<Text className="text-center text-[#999]">
+									No closed activities
+								</Text>
+							)} */}
+							<ClosedTabItemCard />
+						</View>
+					</Tab>
 
-				{Array.from({ length: 8 }).map((_, index) => (
-					<CareProviderCard key={index} />
-				))}
+					{/* Pending Tab */}
+					<Tab title={`Pending (4)`}>
+						<View className="w-full flex py-5 flex-col gap-3">
+							{/* {pendingActivities.length > 0 ? (
+								pendingActivities.map((item) => (
+									<PendingTabItemCard
+										key={item.id}
+										item={item}
+									/>
+								))
+							) : (
+								<Text className="text-center text-[#999]">
+									No pending activities
+								</Text>
+							)} */}
+							<PendingTabItemCard />
+						</View>
+					</Tab>
+				</Tabs>
 			</ScrollView>
+			{/* )} */}
 		</SafeAreaView>
 	);
 }
 
-function CareProviderCard() {
-	const router = useRouter();
+function ActiveTabItemCard() {
+	// const startTime = item.start_time
+	// 	? format(parse(item.start_time, "HH:mm:ss", new Date()), "h:mm a")
+	// 	: "";
+	// const endTime = item.end_time
+	// 	? format(parse(item.end_time, "HH:mm:ss", new Date()), "h:mm a")
+	// 	: "";
 
 	return (
-		<View className="p-4 bg-white border border-[#E6E6E6] rounded-lg flex flex-col gap-3">
-			<View className="w-full flex flex-row items-start gap-3">
-				<View className="w-14 h-14 rounded-full flex items-center justify-center">
-					<Image
-						source={require("@/assets/images/avatar.jpg")}
-						className="w-full h-full rounded-full"
-						resizeMode="cover"
-					/>
-				</View>
-
-				<View className="flex flex-1 flex-col gap-1">
-					<Text className="text-[#4D4D4D] text-xl font-medium">
-						Aleem Sarah
-					</Text>
-					<Text className="text-[#808080] text-base font-normal">
-						Old Dallas, Salford, UK{" "}
-						<Text className="text-xs text-[#B3B3B3]">
-							(45 minutes from location)
-						</Text>
-					</Text>
-					<Text
-						numberOfLines={3}
-						ellipsizeMode="tail"
-						className="text-sm font-normal text-[#999999]"
-					>
-						5 years of experience taking care of all children and
-						running different errands, I am Patient
-					</Text>
-				</View>
+		<View className="w-full flex flex-row gap-4 items-center">
+			<View className="flex flex-col gap-1 items-center">
+				<Text className="text-[#B3B3B3] text-sm font-normal">
+					Wed
+					{/* {new Date(item.date).toLocaleDateString("en-US", {
+						weekday: "short",
+					})} */}
+				</Text>
+				<Text className="text-[#666666] text-sm font-normal">
+					12
+					{/* {new Date(item.date).getDate()} */}
+				</Text>
 			</View>
-
-			<View className="w-full flex flex-row gap-3 items-center">
-				<View className="w-[31%] flex flex-col gap-1 bg-[#FCFCFC] rounded-lg border border-[#F5F5F5] p-2">
-					<Text className="text-[#999999] text-base font-normal">
-						Experience
+			<View className="border-l-4 border-[#0D99C9] rounded-lg p-4 bg-[#F5F5F5] flex flex-1 flex-row gap-4">
+				<Image
+					source={
+						// item.seeker.profile_image_url
+						// 	? {
+						// 			uri: `${baseURL}${item.seeker.profile_image_url}`,
+						// 		}
+						// 	:
+						require("@/assets/images/avatar.jpg")
+					}
+					className="w-12 h-12 rounded-full"
+				/>
+				<View className="flex flex-col gap-0">
+					<Text className="text-[#4D4D4D] text-base font-medium">
+						Child care with Aleemd Sarah
+						{/* {item.title} */}
 					</Text>
-					<Text className="text-[#808080] text-lg font-medium">
-						8 Years
+					<Text className="text-[#999999] text-sm font-normal">
+						06:45 AM - 12.00 PM
+						{/* {startTime} - {endTime} */}
 					</Text>
-				</View>
-
-				<View className="w-[31%] flex flex-col gap-1 bg-[#FCFCFC] rounded-lg border border-[#F5F5F5] p-2">
-					<Text className="text-[#999999] text-base font-normal">
-						Rate
-					</Text>
-					<Text className="text-[#808080] text-lg font-medium">
-						$135/hr
-					</Text>
-				</View>
-
-				<View className="w-[31%] flex flex-col gap-1 bg-[#FCFCFC] rounded-lg border border-[#F5F5F5] p-2">
-					<Text className="text-[#999999] text-base font-normal">
-						Rating
-					</Text>
-
-					<View className="w-full flex flex-row items-center gap-3">
-						<Text>5.0</Text>
-						<View className="flex flex-row gap-1 items-center">
-							{Array.from({ length: 5 }).map((_, i) => (
-								<Star
-									key={i}
-									size={10}
-									color="#CB9E49"
-									fill="#CB9E49"
-								/>
-							))}
-						</View>
-					</View>
-				</View>
-			</View>
-
-			<View className="w-full flex flex-row items-center gap-3">
-				<View className="w-[48%] flex items-center justify-center">
-					<Button title="Message" />
-				</View>
-
-				<View className="w-[48%] flex items-center justify-center">
-					<Button
-						onPress={() => router.push("/seeker/requests/1")}
-						title="View Details"
-						variant="primary-outline"
-					/>
 				</View>
 			</View>
 		</View>
+	);
+}
+
+function ClosedTabItemCard() {
+	const router = useRouter();
+
+	return (
+		<Pressable
+		// onPress={() => router.push(`/provider/activities/${item.id}`)}
+		>
+			<View className="w-full flex flex-col gap-3 border border-[#E6E6E6] bg-white rounded-lg p-4">
+				<Text className="text-[#4D4D4D] text-base font-medium">
+					Lorem ipsum dolor sit amet.
+					{/* {item.job_details.title} */}
+				</Text>
+				<Text className="text-[#999999] text-sm font-normal">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit.
+					Doloribus voluptatum distinctio magnam hic deserunt
+					accusantium quos quod. Doloribus sunt, at libero, cupiditate
+					repudiandae, eos esse accusamus nisi modi consequuntur
+					aliquam!
+					{/* {item.job_details.summary} */}
+				</Text>
+			</View>
+		</Pressable>
+	);
+}
+
+function PendingTabItemCard() {
+	return (
+		<Pressable className="w-full bg-white border border-[#E6E6E6] p-3 rounded-lg flex flex-col gap-2">
+			<Text className="text-[#808080] text-sm font-medium">
+				Posted 3 min ago
+				{/* Posted {item.job_details.posted_ago} */}
+			</Text>
+			<Text className="text-[#4D4D4D] text-base font-medium">
+				{/* {item.job_details.title} */}
+				Lorem ipsum dolor sit amet.
+			</Text>
+			<Text className="text-[#999999] text-base font-medium">
+				{/* {item.job_details.summary} */}
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga
+				reprehenderit, incidunt alias adipisci repudiandae eos est illum
+				harum nesciunt amet necessitatibus rerum voluptatem voluptatibus
+				ducimus dolores eaque, iure dignissimos modi.
+			</Text>
+		</Pressable>
 	);
 }

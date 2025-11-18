@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
 
-export default function ActivitiesLayout() {
+export default function RequestsLayout() {
 	const colorScheme = useColorScheme();
 	const isDark = colorScheme === "dark";
 

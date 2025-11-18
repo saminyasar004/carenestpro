@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { baseURL } from "@/config";
 import { cn } from "@/lib";
+import { useActivitiesStore } from "@/store/activitiesStore";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeft, Star } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import {
-	FlatList,
+	ActivityIndicator,
 	Image,
 	Pressable,
 	SafeAreaView,
@@ -12,115 +16,111 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
+import { Toast } from "toastify-react-native";
 
-export default function ActivityDetails() {
+export default function RequestsDetails() {
 	const { id } = useLocalSearchParams();
 	const router = useRouter();
+	const {
+		getClosedActivityDetails,
+		submitClosedActivityDetails,
+		isLoading,
+		error,
+		setError,
+	} = useActivitiesStore();
 
-	// const [details, setDetails] = useState<any>(null);
-	// const [loading, setLoading] = useState(true);
+	const [details, setDetails] = useState<any>(null);
+	const [loading, setLoading] = useState(true);
+	const [currentPageError, setCurrentPageError] = useState<string | null>(
+		null
+	);
 
-	const testimonials = [
-		{
-			id: "1",
-			text: `"Sarah was an absolute blessing for our family during a challenging time. She cared for our 6 and 9 year old while I recovered from surgery, and I couldn't have asked for better care."`,
-			author: "Nora Wilson",
-		},
-		{
-			id: "2",
-			text: `"Gabriel was wonderful with our toddler — patient, structured, and fun! Highly recommend him for any family."`,
-			author: "Gabriel's Client",
-		},
-		{
-			id: "3",
-			text: `"Maya helped our kids learn and grow with her creative educational games. She became part of the family."`,
-			author: "Maya's Client",
-		},
-	];
+	const [rating, setRating] = useState(0);
+	const [reviewCareSeeker, setReviewCareSeeker] = useState("");
 
-	// const onSubmit = async () => {
-	// 	try {
-	// 		if (!rating) {
-	// 			Toast.error("Please select a rating");
-	// 			return;
-	// 		}
-	// 		if (!reviewCareSeeker) {
-	// 			Toast.error("Please write a review");
-	// 			return;
-	// 		}
+	const onSubmit = async () => {
+		try {
+			if (!rating) {
+				Toast.error("Please select a rating");
+				return;
+			}
+			if (!reviewCareSeeker) {
+				Toast.error("Please write a review");
+				return;
+			}
 
-	// 		const response = await submitClosedActivityDetails({
-	// 			booking_id: Number(id),
-	// 			rating: Number(rating),
-	// 			comment: reviewCareSeeker,
-	// 		});
+			const response = await submitClosedActivityDetails({
+				booking_id: Number(id),
+				rating: Number(rating),
+				comment: reviewCareSeeker,
+			});
 
-	// 		if (response && response.status === 200) {
-	// 			Toast.success("Review submitted successfully");
-	// 			router.back();
-	// 		}
-	// 	} catch (err: any) {
-	// 		console.log("Error occured submitting review: ", err.message);
-	// 		Toast.error(
-	// 			err?.response?.data?.detail ||
-	// 				"Failed to submit review. Please try again later."
-	// 		);
-	// 	}
-	// };
+			if (response && response.status === 200) {
+				Toast.success("Review submitted successfully");
+				router.back();
+			}
+		} catch (err: any) {
+			console.log("Error occured submitting review: ", err.message);
+			Toast.error(
+				err?.response?.data?.detail ||
+					"Failed to submit review. Please try again later."
+			);
+		}
+	};
 
-	// useEffect(() => {
-	// 	if (error) {
-	// 		Toast.error(error);
-	// 		setError(null);
-	// 	}
-	// }, [error]);
+	useEffect(() => {
+		if (error) {
+			Toast.error(error);
+			setError(null);
+		}
+	}, [error]);
 
-	// useEffect(() => {
-	// 	const fetchDetails = async () => {
-	// 		try {
-	// 			setLoading(true);
-	// 			const res = await getClosedActivityDetails(Number(id));
-	// 			setDetails(res);
-	// 		} catch (err: any) {
-	// 			setCurrentPageError("Failed to load activity details");
-	// 		} finally {
-	// 			setLoading(false);
-	// 		}
-	// 	};
-	// 	fetchDetails();
-	// }, [id]);
+	useEffect(() => {
+		const fetchDetails = async () => {
+			try {
+				setLoading(true);
+				const res = await getClosedActivityDetails(Number(id));
+				setDetails(res);
+			} catch (err: any) {
+				setCurrentPageError("Failed to load activity details");
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchDetails();
+	}, [id]);
 
-	// if (loading) {
-	// 	return (
-	// 		<View className="flex-1 items-center justify-center bg-white">
-	// 			<ActivityIndicator size="large" color="#0D99C9" />
-	// 			<Text className="mt-3 text-[#666] text-base">
-	// 				Loading details...
-	// 			</Text>
-	// 		</View>
-	// 	);
-	// }
+	if (loading) {
+		return (
+			<View className="flex-1 items-center justify-center bg-white">
+				<ActivityIndicator size="large" color="#0D99C9" />
+				<Text className="mt-3 text-[#666] text-base">
+					Loading details...
+				</Text>
+			</View>
+		);
+	}
 
-	// if (currentPageError || !details) {
-	// 	return (
-	// 		<View className="flex-1 items-center justify-center bg-white px-6">
-	// 			<Text className="text-red-500 text-lg mb-2">
-	// 				{currentPageError || "No details found"}
-	// 			</Text>
-	// 			<Pressable
-	// 				onPress={() => router.back()}
-	// 				className="bg-[#0D99C9] px-4 py-2 rounded-md mt-2"
-	// 			>
-	// 				<Text className="text-white font-medium">Go Back</Text>
-	// 			</Pressable>
-	// 		</View>
-	// 	);
-	// }
+	if (currentPageError || !details) {
+		return (
+			<View className="flex-1 items-center justify-center bg-white px-6">
+				<Text className="text-red-500 text-lg mb-2">
+					{currentPageError || "No details found"}
+				</Text>
+				<Pressable
+					onPress={() => router.back()}
+					className="bg-[#0D99C9] px-4 py-2 rounded-md mt-2"
+				>
+					<Text className="text-white font-medium">Go Back</Text>
+				</Pressable>
+			</View>
+		);
+	}
 
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			{/* Header */}
-			<View className="w-full h-30 pt-14 flex flex-row gap-3 bg-white p-5 items-center">
+			<View className="w-full h-30 pt-14 flex flex-row gap-3 bg-[#F3FAFC] p-5 items-center">
 				<Pressable onPress={() => router.back()}>
 					<ArrowLeft size={20} color="#636363" />
 				</Pressable>
@@ -136,112 +136,94 @@ export default function ActivityDetails() {
 				contentContainerClassName="gap-6"
 			>
 				<View className="w-full flex flex-1 flex-col gap-3">
+					<Text className="text-lg font-medium text-[#4D4D4D]">
+						{details.job_details}
+					</Text>
+
 					{/* Seeker Info */}
 					<View className="w-full flex flex-row items-center gap-6 py-3">
 						<View className="w-16 h-16 flex items-center justify-center">
 							<Image
-								source={require("@/assets/images/avatar.jpg")}
+								source={
+									details.seeker.profile_image_url
+										? {
+												uri: `${baseURL}${
+													details.seeker
+														.profile_image_url
+												}`,
+											}
+										: require("@/assets/images/avatar.jpg")
+								}
 								className="w-full h-full rounded-full"
 							/>
 						</View>
 						<View className="flex flex-1 flex-col gap-0">
 							<View className="flex flex-row gap-1">
+								<Text className="text-[#2CCA3B] text-lg font-medium">
+									Care seeker -
+								</Text>
 								<Text className="text-[#4D4D4D] font-medium text-lg">
-									Aleem Sarah
+									{details.seeker.full_name}
 								</Text>
 							</View>
 							<Text className="text-[#808080] font-medium text-base">
-								Old Dallas, Salford, UK
+								{details.seeker_location}
 							</Text>
-							<View className="w-full flex flex-row items-center gap-3">
-								<Text>5.0</Text>
-								<View className="flex flex-row gap-1 items-center">
-									{Array.from({ length: 5 }).map((_, i) => (
-										<Star
-											key={i}
-											size={10}
-											color="#CB9E49"
-											fill="#CB9E49"
-										/>
-									))}
-								</View>
-							</View>
+							<Text className="text-[#808080] font-normal text-sm">
+								Joined {details.seeker_join_date}
+							</Text>
 						</View>
 					</View>
 
 					{/* Summary Info */}
 					<View className="w-full flex flex-row items-center gap-1">
 						<InfoBox
-							title="Experience"
-							value={"8 years"}
+							title="Date range for task"
+							value={details.date_range_for_task}
 							className="flex-1"
 						/>
 						<InfoBox
 							title="Rate"
-							value={`$34/hr`}
+							value={`$${details.rate_per_hour}/hr`}
 							className="w-[100px]"
 						/>
-						<RatingBox rating={5} className="w-[20px]" />
-					</View>
-
-					<View className="w-full flex flex-col gap-2">
-						<View className="bg-[#F3F9FC] p-3 rounded-lg flex flex-col gap-3">
-							<Text className="text-lg text-[#4F6774] font-medium">
-								About
-							</Text>
-							<Text className="text-[#738894] text-base font-normal">
-								Dedicated childcare provider with extensive ways
-								of managing daily routines for multiple
-								children. Skilled in age-appropriate activities,
-								behavioural guidance, and emergency response.
-								Strong communication with parents, maintains
-								detailed care logs, and priorities safety above
-								all. Trustworthy, energetic, and passionate
-								about supporting children's emotional and
-								physical development.
-							</Text>
-						</View>
-					</View>
-
-					<View className="w-full mt-3">
-						<Text className="text-base font-medium text-[#808080] mb-2">
-							Testimonials
-						</Text>
-						<FlatList
-							data={testimonials}
-							keyExtractor={(item) => item.id}
-							horizontal
-							showsHorizontalScrollIndicator={false}
-							ItemSeparatorComponent={() => (
-								<View style={{ width: 12 }} />
-							)}
-							renderItem={({ item }) => (
-								<View className="w-72 rounded-lg border border-[#E6E6E6] bg-white p-4 shadow-sm">
-									<Text
-										numberOfLines={4}
-										ellipsizeMode="tail"
-										className="text-gray-500 text-base"
-									>
-										{item.text}
-									</Text>
-									<View className="w-full flex flex-row items-center justify-between gap-3 py-3">
-										<Text className="font-semibold text-[#666666]">
-											{item.author}
-										</Text>
-										<Pressable>
-											<Text className="text-primary font-medium">
-												Read more
-											</Text>
-										</Pressable>
-									</View>
-								</View>
-							)}
+						<RatingBox
+							rating={details.seeker_average_rating}
+							className="w-[20px]"
 						/>
 					</View>
 
+					<View className="w-full flex flex-col gap-2 relative">
+						<Textarea
+							label="Review the care seeker"
+							placeholder="Input feedback of your time with caregiver"
+							value={reviewCareSeeker}
+							onChange={(text: any) => setReviewCareSeeker(text)}
+							inputStyle="min-h-[150px] pb-10"
+						/>
+
+						{/* Stars */}
+						<StarRating
+							rating={rating}
+							onChange={setRating}
+							className="absolute bottom-4 left-4"
+						/>
+					</View>
+
+					{details.review_from_seeker && (
+						<>
+							<Text className="text-[#666666] font-normal text-base">
+								Testimonials
+							</Text>
+
+							<View className="w-full flex items-center border border-border rounded-md">
+								<Text>{details.review_from_seeker}</Text>
+							</View>
+						</>
+					)}
 					<Button
-						// onPress={onSubmit}
-						title="Message"
+						onPress={onSubmit}
+						title={isLoading ? "Submitting..." : "Submit"}
 						className="mt-8"
 					/>
 				</View>
