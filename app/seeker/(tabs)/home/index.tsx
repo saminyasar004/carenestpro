@@ -152,9 +152,7 @@ export default function HomePage() {
 				<View className="w-full flex flex-row gap-3">
 					<Pressable
 						onPress={() =>
-							router.push(
-								"/seeker/(tabs)/home/new-care-providers-request"
-							)
+							router.push("/seeker/(tabs)/home/care-providers")
 						}
 						className="w-[48%] bg-[#F3F9FC] border border-[#E6F2F9] rounded-lg flex flex-col gap-3 p-5"
 					>
@@ -192,12 +190,12 @@ export default function HomePage() {
 					</View>
 				</View>
 
-				<View className="p-5 bg-[#FCFCFC] rounded-lg">
+				<View className="p-3 bg-[#FCFCFC] rounded-lg">
 					<Text className="text-[#808080] text-base font-normal">
 						Ongoing Activity
 					</Text>
 
-					<View className="w-full flex flex-row gap-4 items-center">
+					<View className="w-full flex flex-row gap-4 items-center mt-5">
 						<View className="flex flex-col gap-1 items-center">
 							<Text className="text-[#B3B3B3] text-sm font-normal">
 								Wed

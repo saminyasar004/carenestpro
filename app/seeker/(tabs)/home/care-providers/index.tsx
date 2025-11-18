@@ -44,7 +44,7 @@ export default function Index() {
 						<ArrowLeft size={20} color="#636363" />
 					</Pressable>
 					<Text className="text-[#515151] text-2xl font-medium">
-						New care providers request
+						Care provider requests
 					</Text>
 				</View>
 			</View>
