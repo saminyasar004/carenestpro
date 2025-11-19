@@ -32,7 +32,7 @@ export default function HomePage() {
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
 		setShowModal(true);
-		fetchDashboardData();
+		await fetchDashboardData();
 		setRefreshing(false);
 	}, []);
 
