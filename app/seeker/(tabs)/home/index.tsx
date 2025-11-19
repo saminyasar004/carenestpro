@@ -1,7 +1,7 @@
 import SubscribeModal from "@/components/common/subscribe-modal";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
-import { useSeekerDashboardStore } from "@/store/useSeekerDashboard";
+import { useSeekerDashboardStore } from "@/store/seekerDashboardStore";
 import { useRouter } from "expo-router";
 import { BadgeCheck, Bell, FolderOpen } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
