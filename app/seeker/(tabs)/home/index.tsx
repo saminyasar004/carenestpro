@@ -1,6 +1,7 @@
 import SubscribeModal from "@/components/common/subscribe-modal";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
+import { useSeekerDashboardStore } from "@/store/useSeekerDashboard";
 import { useRouter } from "expo-router";
 import { BadgeCheck, Bell, FolderOpen } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
@@ -20,6 +21,8 @@ export default function HomePage() {
 	const { user } = useAuthStore();
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [refreshing, setRefreshing] = useState(false);
+	const { dashboardData, fetchDashboardData, isLoading, error } =
+		useSeekerDashboardStore();
 
 	useEffect(() => {
 		console.log(user);
@@ -29,34 +32,29 @@ export default function HomePage() {
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
 		setShowModal(true);
+		fetchDashboardData();
 		setRefreshing(false);
 	}, []);
 
-	// if (isLoading && !refreshing) {
-	// 	return (
-	// 		<SafeAreaView className="w-full h-full flex items-center justify-center">
-	// 			<Text className="text-base font-medium">Loading jobs...</Text>
-	// 		</SafeAreaView>
-	// 	);
-	// }
+	if (isLoading && !refreshing) {
+		return (
+			<SafeAreaView className="w-full h-full flex items-center justify-center">
+				<Text className="text-base font-medium">
+					Loading seeker dashboard...
+				</Text>
+			</SafeAreaView>
+		);
+	}
 
-	// if (error) {
-	// 	return (
-	// 		<SafeAreaView className="w-full h-full flex items-center justify-center">
-	// 			<Text className="text-base font-medium text-red-500">
-	// 				{error}
-	// 			</Text>
-	// 		</SafeAreaView>
-	// 	);
-	// }
-
-	// if (!jobs.length) {
-	// 	return (
-	// 		<SafeAreaView className="w-full h-full flex items-center justify-center">
-	// 			<Text className="text-base font-medium">No jobs found</Text>
-	// 		</SafeAreaView>
-	// 	);
-	// }
+	if (error) {
+		return (
+			<SafeAreaView className="w-full h-full flex items-center justify-center">
+				<Text className="text-base font-medium text-red-500">
+					{error}
+				</Text>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView className="w-full h-full">
@@ -65,7 +63,8 @@ export default function HomePage() {
 					<View className="flex flex-row gap-2 items-center">
 						<BadgeCheck size={24} color="#DDF3DF" fill="#8ED796" />
 						<Text className="text-[#636363] text-base font-medium">
-							Hello, {user?.full_name || "Mark"}!
+							Hello,{" "}
+							{dashboardData.greeting_name || user?.full_name}!
 						</Text>
 					</View>
 					<View>
@@ -74,7 +73,7 @@ export default function HomePage() {
 				</View>
 			</View>
 			<ScrollView
-				className="p-5 bg-white"
+				className="p-5 pt-0 bg-white"
 				refreshControl={
 					<RefreshControl
 						refreshing={refreshing}
@@ -84,7 +83,6 @@ export default function HomePage() {
 				}
 				contentContainerStyle={{
 					flexGrow: 1,
-					paddingBottom: 60,
 				}}
 				contentContainerClassName="gap-6"
 			>
@@ -97,7 +95,7 @@ export default function HomePage() {
 						<View className="w-full flex flex-row gap-4 items-center">
 							<View className="w-[48%] flex flex-col gap-2 flex-1">
 								<Text className="text-xl font-medium text-[#0D99C9]">
-									7
+									{dashboardData.new_care_provider_requests}
 								</Text>
 								<Text className="text-base text-wrap font-normal text-[#265977]">
 									New Care Providers request
@@ -108,7 +106,7 @@ export default function HomePage() {
 
 							<View className="w-[48%] flex flex-col gap-2 pl-8">
 								<Text className="text-xl font-medium text-[#0D99C9]">
-									₦ 23.00
+									₦ {dashboardData.total_amount_spent}
 								</Text>
 								<Text className="text-base text-wrap font-normal text-[#265977]">
 									Total Amount Spent
