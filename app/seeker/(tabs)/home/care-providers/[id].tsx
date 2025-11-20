@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib";
+import { useNearestCareProvidersStore } from "@/store/nearestCareProvidersStore";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeft, Star } from "lucide-react-native";
+import { useCallback, useState } from "react";
 import {
 	FlatList,
 	Image,
 	Pressable,
+	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	Text,
@@ -17,8 +20,19 @@ export default function ActivityDetails() {
 	const { id } = useLocalSearchParams();
 	const router = useRouter();
 
-	// const [details, setDetails] = useState<any>(null);
-	// const [loading, setLoading] = useState(true);
+	const {
+		detailsNearestCareProviders,
+		fetchDetailsNearestCareProviders,
+		isLoading,
+		error,
+	} = useNearestCareProvidersStore();
+	const [refreshing, setRefreshing] = useState(false);
+
+	const onRefresh = useCallback(async () => {
+		setRefreshing(true);
+		await fetchDetailsNearestCareProviders(Number(id));
+		setRefreshing(false);
+	}, []);
 
 	const testimonials = [
 		{
@@ -38,85 +52,6 @@ export default function ActivityDetails() {
 		},
 	];
 
-	// const onSubmit = async () => {
-	// 	try {
-	// 		if (!rating) {
-	// 			Toast.error("Please select a rating");
-	// 			return;
-	// 		}
-	// 		if (!reviewCareSeeker) {
-	// 			Toast.error("Please write a review");
-	// 			return;
-	// 		}
-
-	// 		const response = await submitClosedActivityDetails({
-	// 			booking_id: Number(id),
-	// 			rating: Number(rating),
-	// 			comment: reviewCareSeeker,
-	// 		});
-
-	// 		if (response && response.status === 200) {
-	// 			Toast.success("Review submitted successfully");
-	// 			router.back();
-	// 		}
-	// 	} catch (err: any) {
-	// 		console.log("Error occured submitting review: ", err.message);
-	// 		Toast.error(
-	// 			err?.response?.data?.detail ||
-	// 				"Failed to submit review. Please try again later."
-	// 		);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	if (error) {
-	// 		Toast.error(error);
-	// 		setError(null);
-	// 	}
-	// }, [error]);
-
-	// useEffect(() => {
-	// 	const fetchDetails = async () => {
-	// 		try {
-	// 			setLoading(true);
-	// 			const res = await getClosedActivityDetails(Number(id));
-	// 			setDetails(res);
-	// 		} catch (err: any) {
-	// 			setCurrentPageError("Failed to load activity details");
-	// 		} finally {
-	// 			setLoading(false);
-	// 		}
-	// 	};
-	// 	fetchDetails();
-	// }, [id]);
-
-	// if (loading) {
-	// 	return (
-	// 		<View className="flex-1 items-center justify-center bg-white">
-	// 			<ActivityIndicator size="large" color="#0D99C9" />
-	// 			<Text className="mt-3 text-[#666] text-base">
-	// 				Loading details...
-	// 			</Text>
-	// 		</View>
-	// 	);
-	// }
-
-	// if (currentPageError || !details) {
-	// 	return (
-	// 		<View className="flex-1 items-center justify-center bg-white px-6">
-	// 			<Text className="text-red-500 text-lg mb-2">
-	// 				{currentPageError || "No details found"}
-	// 			</Text>
-	// 			<Pressable
-	// 				onPress={() => router.back()}
-	// 				className="bg-[#0D99C9] px-4 py-2 rounded-md mt-2"
-	// 			>
-	// 				<Text className="text-white font-medium">Go Back</Text>
-	// 			</Pressable>
-	// 		</View>
-	// 	);
-	// }
-
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			{/* Header */}
@@ -134,29 +69,51 @@ export default function ActivityDetails() {
 				className="px-5 bg-white"
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
 				contentContainerClassName="gap-6"
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						colors={["#0D99C9"]}
+					/>
+				}
 			>
 				<View className="w-full flex flex-1 flex-col gap-3">
 					{/* Seeker Info */}
 					<View className="w-full flex flex-row items-center gap-6 py-3">
 						<View className="w-16 h-16 flex items-center justify-center">
 							<Image
-								source={require("@/assets/images/avatar.jpg")}
+								source={
+									detailsNearestCareProviders.user
+										.profile_image_url
+										? {
+												uri: detailsNearestCareProviders
+													.user.profile_image_url,
+											}
+										: require("@/assets/images/avatar.jpg")
+								}
 								className="w-full h-full rounded-full"
 							/>
 						</View>
 						<View className="flex flex-1 flex-col gap-0">
 							<View className="flex flex-row gap-1">
 								<Text className="text-[#4D4D4D] font-medium text-lg">
-									Aleem Sarah
+									{detailsNearestCareProviders.user.full_name}
 								</Text>
 							</View>
 							<Text className="text-[#808080] font-medium text-base">
-								Old Dallas, Salford, UK
+								{detailsNearestCareProviders.city},{" "}
+								{detailsNearestCareProviders.country}
 							</Text>
 							<View className="w-full flex flex-row items-center gap-3">
-								<Text>5.0</Text>
+								<Text>
+									{detailsNearestCareProviders.average_rating}
+								</Text>
 								<View className="flex flex-row gap-1 items-center">
-									{Array.from({ length: 5 }).map((_, i) => (
+									{Array.from({
+										length: parseInt(
+											detailsNearestCareProviders.average_rating.toString()
+										),
+									}).map((_, i) => (
 										<Star
 											key={i}
 											size={10}
@@ -173,12 +130,17 @@ export default function ActivityDetails() {
 					<View className="w-full flex flex-row items-center gap-1">
 						<InfoBox
 							title="Experience"
-							value={"8 years"}
+							value={
+								detailsNearestCareProviders.years_of_experience >
+								1
+									? `${detailsNearestCareProviders.years_of_experience} years`
+									: `${detailsNearestCareProviders.years_of_experience} year`
+							}
 							className="flex-1"
 						/>
 						<InfoBox
 							title="Rate"
-							value={`$34/hr`}
+							value={`$${detailsNearestCareProviders.hourly_rate}/hr`}
 							className="w-[100px]"
 						/>
 						<RatingBox rating={5} className="w-[20px]" />
@@ -190,15 +152,7 @@ export default function ActivityDetails() {
 								About
 							</Text>
 							<Text className="text-[#738894] text-base font-normal">
-								Dedicated childcare provider with extensive ways
-								of managing daily routines for multiple
-								children. Skilled in age-appropriate activities,
-								behavioural guidance, and emergency response.
-								Strong communication with parents, maintains
-								detailed care logs, and priorities safety above
-								all. Trustworthy, energetic, and passionate
-								about supporting children's emotional and
-								physical development.
+								{detailsNearestCareProviders.summary}
 							</Text>
 						</View>
 					</View>
@@ -208,8 +162,8 @@ export default function ActivityDetails() {
 							Testimonials
 						</Text>
 						<FlatList
-							data={testimonials}
-							keyExtractor={(item) => item.id}
+							data={detailsNearestCareProviders.testimonials}
+							keyExtractor={(item) => item.id.toString()}
 							horizontal
 							showsHorizontalScrollIndicator={false}
 							ItemSeparatorComponent={() => (
@@ -222,11 +176,11 @@ export default function ActivityDetails() {
 										ellipsizeMode="tail"
 										className="text-gray-500 text-base"
 									>
-										{item.text}
+										{item.comment}
 									</Text>
 									<View className="w-full flex flex-row items-center justify-between gap-3 py-3">
 										<Text className="font-semibold text-[#666666]">
-											{item.author}
+											{item.reviewer}
 										</Text>
 										<Pressable>
 											<Text className="text-primary font-medium">
@@ -239,11 +193,7 @@ export default function ActivityDetails() {
 						/>
 					</View>
 
-					<Button
-						// onPress={onSubmit}
-						title="Message"
-						className="mt-8"
-					/>
+					<Button title="Message" className="mt-8" />
 				</View>
 			</ScrollView>
 		</SafeAreaView>
