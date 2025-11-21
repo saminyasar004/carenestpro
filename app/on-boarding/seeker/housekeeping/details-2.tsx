@@ -184,6 +184,7 @@ export default function Page() {
 				<Input
 					label="Number of Bedrooms"
 					placeholder="Input number of bedrooms"
+					keyboardType="number-pad"
 					value={housekeepingInfo.number_of_bedrooms}
 					onChangeText={(value: string) =>
 						updateCareSeekerData({
