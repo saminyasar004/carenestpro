@@ -154,7 +154,7 @@ function CareProviderCard({
 						Rate
 					</Text>
 					<Text className="text-[#808080] text-lg font-medium">
-						${careProvider.hourly_rate}/hr
+						₦{careProvider.hourly_rate}/hr
 					</Text>
 				</View>
 

@@ -45,7 +45,7 @@ export default function SubscribeModal({
 										Free
 									</Text>
 									<Text className="text-2xl font-medium text-[#354A55]">
-										$00.00
+										₦00.00
 									</Text>
 
 									<Button
@@ -60,7 +60,7 @@ export default function SubscribeModal({
 										Quarterly
 									</Text>
 									<Text className="text-2xl font-medium text-[#FFFFFF]">
-										$68.99
+										₦68.99
 									</Text>
 
 									<Button
@@ -75,7 +75,7 @@ export default function SubscribeModal({
 										Monthly
 									</Text>
 									<Text className="text-2xl font-medium text-[#354A55]">
-										$23.99
+										₦23.99
 									</Text>
 
 									<Button

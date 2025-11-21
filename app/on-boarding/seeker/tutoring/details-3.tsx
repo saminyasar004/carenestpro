@@ -445,7 +445,7 @@ const Reoccuring = () => {
 					<Info size={16} color="#70CC7A" />
 
 					<Text className="text-[#70CC7A] font-normal text-sm">
-						average range in your area is $32 - $55
+						average range in your area is ₦32 - ₦55
 					</Text>
 				</View>
 
@@ -490,10 +490,10 @@ const Reoccuring = () => {
 
 					<View className="w-full flex flex-row items-center justify-between bg-red-500">
 						<Text className="text-[#808080] text-sm absolute -top-3 left-0">
-							$10
+							₦10
 						</Text>
 						<Text className="text-[#808080] text-sm absolute -top-3 -right-5">
-							$3000
+							₦3000
 						</Text>
 					</View>
 				</View>
@@ -630,7 +630,7 @@ const OneOff = () => {
 					<Info size={16} color="#70CC7A" />
 
 					<Text className="text-[#70CC7A] font-normal text-sm">
-						average range in your area is $32 - $55
+						average range in your area is ₦32 - ₦55
 					</Text>
 				</View>
 
@@ -675,10 +675,10 @@ const OneOff = () => {
 
 					<View className="w-full flex flex-row items-center justify-between bg-red-500">
 						<Text className="text-[#808080] text-sm absolute -top-3 left-0">
-							$10
+							₦10
 						</Text>
 						<Text className="text-[#808080] text-sm absolute -top-3 -right-5">
-							$3000
+							₦3000
 						</Text>
 					</View>
 				</View>

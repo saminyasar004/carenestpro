@@ -140,7 +140,7 @@ export default function ActivityDetails() {
 						/>
 						<InfoBox
 							title="Rate"
-							value={`$${detailsNearestCareProviders.hourly_rate}/hr`}
+							value={`₦${detailsNearestCareProviders.hourly_rate}/hr`}
 							className="w-[100px]"
 						/>
 						<RatingBox rating={5} className="w-[20px]" />

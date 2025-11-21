@@ -38,10 +38,10 @@ export default function Payment() {
 					</Text>
 
 					<Text className="text-white font-medium text-lg mt-6">
-						$1,500.00
+						₦1,500.00
 					</Text>
 					<Text className="text-xs font-normal text-[#D2F0FA]">
-						$12/mo
+						₦12/mo
 					</Text>
 
 					<Button
@@ -60,10 +60,10 @@ export default function Payment() {
 					</Text>
 
 					<Text className="text-[#4D4D4D] font-medium text-lg mt-6">
-						$1,500.00
+						₦1,500.00
 					</Text>
 					<Text className="text-xs font-normal text-[#808080]">
-						$12/mo
+						₦12/mo
 					</Text>
 
 					<Button
