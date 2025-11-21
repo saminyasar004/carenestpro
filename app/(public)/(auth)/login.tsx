@@ -98,7 +98,7 @@ export default function Page() {
 						<Text className="text-foreground text-lg">
 							Don&apos;t have an account yet?{" "}
 							<Link
-								href={"/signup"}
+								href={"/choose"}
 								replace
 								className="text-primary"
 							>
