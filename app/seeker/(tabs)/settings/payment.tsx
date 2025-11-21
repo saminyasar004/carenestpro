@@ -1,10 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
+import { useState } from "react";
 import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 
 export default function Payment() {
 	const router = useRouter();
+	const [isMakingPayment, setIsMakingPayment] = useState(false);
+
+	const onSubmit = () => {
+		const timer = setTimeout(() => {
+			setIsMakingPayment(false);
+		}, 8000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	};
 
 	return (
 		<SafeAreaView className="w-full h-full bg-white">
@@ -45,7 +57,12 @@ export default function Payment() {
 					</Text>
 
 					<Button
-						title="Make Payment"
+						title={
+							isMakingPayment
+								? "Making Payment..."
+								: "Make Payment"
+						}
+						onPress={onSubmit}
 						className="bg-[#DAECF7] border border-[#CDE5F4] mt-6"
 						textClassName="text-[#6CB3DD] font-normal text-base"
 					/>
@@ -67,7 +84,12 @@ export default function Payment() {
 					</Text>
 
 					<Button
-						title="Make Payment"
+						title={
+							isMakingPayment
+								? "Making Payment..."
+								: "Make Payment"
+						}
+						onPress={onSubmit}
 						className="bg-[#DAECF7] border border-[#CDE5F4] mt-6"
 						textClassName="text-[#6CB3DD] font-normal text-base"
 					/>
