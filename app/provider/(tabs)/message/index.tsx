@@ -1,8 +1,10 @@
 import { useRouter } from "expo-router";
 import { ArrowLeft, Search } from "lucide-react-native";
+import { useState } from "react";
 import {
 	Image,
 	Pressable,
+	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	Text,
@@ -12,6 +14,22 @@ import {
 
 export default function Message() {
 	const router = useRouter();
+
+	const [refreshing, setRefreshing] = useState(false);
+
+	const onRefresh = async () => {
+		setRefreshing(true);
+		// // await fetchMessages();
+		// setRefreshing(false);
+
+		const timer = setTimeout(() => {
+			setRefreshing(false);
+		}, 8000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	};
 
 	return (
 		<SafeAreaView className="w-full h-full">
@@ -51,17 +69,41 @@ export default function Message() {
 					paddingBottom: 60,
 				}}
 				contentContainerClassName="gap-6"
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						colors={["#0D99C9"]}
+						tintColor="#0D99C9"
+					/>
+				}
 			>
-				{Array.from({ length: 20 }).map((_, index) => (
+				{refreshing && (
+					<View className="w-full h-full flex items-center justify-center">
+						<Text className="text-primary/50 font-medium">
+							Loading conversations...
+						</Text>
+					</View>
+				)}
+
+				{!refreshing && (
+					<View className="w-full h-full flex items-center justify-center">
+						<Text className="text-red-500/50 font-medium">
+							Couldn't find any conversations
+						</Text>
+					</View>
+				)}
+
+				{/* {Array.from({ length: 20 }).map((_, index) => (
 					<Pressable
 						key={index}
 						onPress={() =>
-							router.push("/provider/(tabs)/message/[id]")
+							router.push("/seeker/(tabs)/message/[id]")
 						}
 					>
 						<MessageCard />
 					</Pressable>
-				))}
+				))} */}
 			</ScrollView>
 		</SafeAreaView>
 	);
