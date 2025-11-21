@@ -1,6 +1,7 @@
 import LOCATION from "@/assets/svgs/location.svg";
 import { baseURL } from "@/config";
 import { useCareProviderStore } from "@/store/careProviderStore";
+import { useCareSeekerStore } from "@/store/careSeekerStore";
 import axios from "axios";
 import * as Device from "expo-device"; // Optional: to check if running on real device
 import * as Location from "expo-location";
@@ -30,6 +31,7 @@ export function EnableLocationModal({
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { careProviderData, updateCareProviderData } = useCareProviderStore();
+	const { careSeekerData, updateCareSeekerData } = useCareSeekerStore();
 
 	const handleAllowLocation = async () => {
 		setIsLoading(true);
@@ -89,6 +91,24 @@ export function EnableLocationModal({
 						city: response.data?.city,
 						zip_code: response.data?.zip_code,
 						nationality: response.data?.nationality,
+					},
+				});
+				updateCareSeekerData({
+					job_data: {
+						...careSeekerData.job_data,
+						details: {
+							...careSeekerData.job_data.details,
+							location_information: {
+								...careSeekerData.job_data.details
+									.location_information,
+								use_current_location: true,
+								country: response.data?.country,
+								state: response.data?.state,
+								city: response.data?.city,
+								zip_code: response.data?.zip_code,
+								nationality: response.data?.nationality,
+							},
+						},
 					},
 				});
 				Toast.success("Location successfully fetched");
