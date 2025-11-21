@@ -9,10 +9,18 @@ import {
 	Wallet,
 } from "lucide-react-native";
 import { SafeAreaView, useColorScheme, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
 	const colorScheme = useColorScheme();
 	const isDark = colorScheme === "dark";
+
+	const { bottom } = useSafeAreaInsets();
+
+	// Typical comfortable tab bar height = 50–60 + bottom inset
+	const tabBarHeight = bottom ? bottom + 58 : 68;
+
+	console.log(tabBarHeight);
 
 	return (
 		<SafeAreaView className="w-full h-full">
@@ -24,7 +32,7 @@ export default function TabsLayout() {
 				screenOptions={{
 					headerShown: false,
 					tabBarStyle: {
-						height: 80,
+						height: tabBarHeight,
 						paddingTop: 0,
 						paddingBottom: 0,
 						marginBottom: 0,
